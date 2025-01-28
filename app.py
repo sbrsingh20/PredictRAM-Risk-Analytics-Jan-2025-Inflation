@@ -10,6 +10,10 @@ inflation_income_statement_file = "India Inflation CPI IncomeStatement.xlsx"
 inflation_price_df = pd.read_excel(inflation_price_index_file)
 inflation_income_df = pd.read_excel(inflation_income_statement_file)
 
+# Debugging: Print columns of each dataframe
+st.write("Columns in inflation_price_df:", inflation_price_df.columns.tolist())
+st.write("Columns in inflation_income_df:", inflation_income_df.columns.tolist())
+
 # Risk categorization based on correlation values
 def categorize_risk(value, thresholds):
     if value < thresholds[0]:
@@ -39,10 +43,10 @@ def calculate_inflation_correlation(stock_symbols):
                 inflation_results.append({
                     'Symbol': stock_symbol,
                     'Category': 'Inflation Correlation',
-                    'Parameter': row['Parameter'],
-                    'Value': row['Correlation'],
-                    'Risk Level': categorize_risk(row['Correlation'], (-0.5, 0.5)),
-                    'Color': get_risk_color(categorize_risk(row['Correlation'], (-0.5, 0.5)))
+                    'Parameter': row.get('Parameter', 'N/A'),
+                    'Value': row.get('Correlation', 0),
+                    'Risk Level': categorize_risk(row.get('Correlation', 0), (-0.5, 0.5)),
+                    'Color': get_risk_color(categorize_risk(row.get('Correlation', 0), (-0.5, 0.5)))
                 })
 
         # Add correlations from income statement data
@@ -51,10 +55,10 @@ def calculate_inflation_correlation(stock_symbols):
                 inflation_results.append({
                     'Symbol': stock_symbol,
                     'Category': 'Inflation Correlation (Income)',
-                    'Parameter': row['Parameter'],
-                    'Value': row['Correlation'],
-                    'Risk Level': categorize_risk(row['Correlation'], (-0.5, 0.5)),
-                    'Color': get_risk_color(categorize_risk(row['Correlation'], (-0.5, 0.5)))
+                    'Parameter': row.get('Parameter', 'N/A'),
+                    'Value': row.get('Correlation', 0),
+                    'Risk Level': categorize_risk(row.get('Correlation', 0), (-0.5, 0.5)),
+                    'Color': get_risk_color(categorize_risk(row.get('Correlation', 0), (-0.5, 0.5)))
                 })
 
     return inflation_results

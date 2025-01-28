@@ -30,14 +30,14 @@ def calculate_inflation_correlation(stock_symbols):
 
     for stock_symbol in stock_symbols:
         # Extract stock-specific data
-        stock_price_data = inflation_price_df[inflation_price_df['Stock Symbol'] == stock_symbol]
-        stock_income_data = inflation_income_df[inflation_income_df['Stock Symbol'] == stock_symbol]
+        stock_price_data = inflation_price_df[inflation_price_df['Symbol'] == stock_symbol]
+        stock_income_data = inflation_income_df[inflation_income_df['Symbol'] == stock_symbol]
 
         # Add correlations from price index data
         if not stock_price_data.empty:
             for _, row in stock_price_data.iterrows():
                 inflation_results.append({
-                    'Stock Symbol': stock_symbol,
+                    'Symbol': stock_symbol,
                     'Category': 'Inflation Correlation',
                     'Parameter': row['Parameter'],
                     'Value': row['Correlation'],
@@ -49,7 +49,7 @@ def calculate_inflation_correlation(stock_symbols):
         if not stock_income_data.empty:
             for _, row in stock_income_data.iterrows():
                 inflation_results.append({
-                    'Stock Symbol': stock_symbol,
+                    'Symbol': stock_symbol,
                     'Category': 'Inflation Correlation (Income)',
                     'Parameter': row['Parameter'],
                     'Value': row['Correlation'],
@@ -76,7 +76,7 @@ def plot_risk_pie_chart(results, category):
 
 # Function to plot trends of inflation parameters
 def plot_inflation_trends(df, stock_symbol):
-    stock_data = df[df['Stock Symbol'] == stock_symbol]
+    stock_data = df[df['Symbol'] == stock_symbol]
     if stock_data.empty:
         st.write(f"No data available for {stock_symbol}")
         return
@@ -96,7 +96,7 @@ def plot_inflation_trends(df, stock_symbol):
 st.title("Comprehensive Risk Analysis with Inflation Data")
 
 # User input: Select stocks to analyze
-stock_symbols = inflation_price_df['Stock Symbol'].unique()
+stock_symbols = inflation_price_df['Symbol'].unique()
 selected_stocks = st.multiselect("Select Stocks for Analysis", stock_symbols)
 
 if selected_stocks:
@@ -118,7 +118,7 @@ if selected_stocks:
     st.subheader("Inflation Impact Summary")
     for stock_symbol in selected_stocks:
         st.write(f"Inflation correlation for {stock_symbol}:")
-        inflation_summary = [r for r in inflation_results if r['Stock Symbol'] == stock_symbol]
+        inflation_summary = [r for r in inflation_results if r['Symbol'] == stock_symbol]
         st.write(pd.DataFrame(inflation_summary))
 
 else:
